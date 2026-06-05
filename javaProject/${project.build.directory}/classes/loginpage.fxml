@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane prefHeight="500" prefWidth="600" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+    <StackPane>
+    <!-- Background Image -->
+    <ImageView fitHeight="700.0" fitWidth="800.0" preserveRatio="false">
+        <image>
+            <Image url="@/image/fond.jpg" />
+        </image>
+    </ImageView>
+        <!-- Glass effect overlay -->
+        <Rectangle width="800" height="700" fill="#505050" opacity="0.20">
+            <effect>
+                <GaussianBlur radius="10"/>
+            </effect>
+        </Rectangle>
+    </StackPane>
+    <StackPane styleClass="logo-container">
+        <ImageView fx:id="logoImageView" fitWidth="110" fitHeight="110" opacity="0.85" preserveRatio="false" />
+    </StackPane>
+    <!-- Semi-transparent overlay for better text readability -->
+    <StackPane prefHeight="600.0" prefWidth="800.0" styleClass="overlay" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0" />
+
+
+    <!-- Main Login Container -->
+    <VBox alignment="CENTER" spacing="30" styleClass="login-container"
+          AnchorPane.topAnchor="180.0" AnchorPane.bottomAnchor="80.0"
+          AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+
+
+
+        <!-- Login Form -->
+        <GridPane alignment="CENTER" hgap="15" vgap="15" styleClass="form-grid">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="90" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="200" />
+            </columnConstraints>
+
+            <!-- Email Field -->
+
+            <TextField fx:id="email" promptText="Enter your email" styleClass="form-field"
+                       GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <!-- Password Field -->
+
+            <PasswordField fx:id="password" promptText="Enter your password" styleClass="form-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text=" " GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                <Pane fx:id="captchaContainer" prefWidth="200" prefHeight="80" />
+
+                <Button fx:id="refreshCaptchaButton" text=" " onAction="#refreshCaptcha">
+                    <graphic>
+                    <ImageView fitWidth="16" fitHeight="16">
+                        <image>
+                            <Image url="@icons/re.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+                    <style>
+                -fx-background-radius: 50;
+                -fx-min-width: 30;
+                -fx-min-height: 30;
+                -fx-max-width: 30;
+                -fx-max-height: 30;
+                -fx-padding: 0;
+                -fx-font-size: 14;
+            </style>
+                </Button>
+            </HBox>
+            <TextField fx:id="captchaInput" promptText="Enter the code above"
+                       GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+        </GridPane>
+
+        <!-- Login Options -->
+        <HBox alignment="CENTER" spacing="20">
+            <Button fx:id="loginButton" onAction="#handleLogin"
+                    text="Login" styleClass="primary-button">
+
+            </Button>
+
+            <Button fx:id="faceIdLoginButton" onAction="#handleFaceIdLogin"
+                    text="Face ID" styleClass="secondary-button">
+
+            </Button>
+
+        </HBox>
+        <Button alignment="CENTER" fx:id="googleSignInBtn" text="Sign in with Google" onAction="#signUpWithGoogle" />
+        <!-- Links -->
+        <VBox spacing="0" alignment="CENTER">
+            <Hyperlink onAction="#handleForgotPassword"
+                       text="Forgot Password?" styleClass="link" />
+            <Hyperlink onAction="#goToRegister"
+                       text="Don't have an account? Sign up" styleClass="link" />
+
+        </VBox>
+    </VBox>
+</AnchorPane>
