@@ -1,44 +1,42 @@
-###Business Travel Management System (ESPRIT 2025)
-A comprehensive, secure, and user-centric platform designed to streamline business travel management. This project focuses on high-security standards, user identity management, and real-time data visualization.
+# Business Travel Management System
 
-🚀 Key Features
-🔐 Advanced Security & IAM
-Biometric MFA: Implemented a unique Multi-Factor Authentication layer using OpenCV for real-time facial recognition.
+A robust and secure enterprise-grade application designed for efficient business travel management. This project emphasizes modern security standards (IAM), biometric authentication, and actionable data visualization.
 
-Identity Management: Integrated OAuth 2.0 (Google SSO) for seamless and secure access.
+#### 👤 Project Contribution
+Lead Developer – User Management & Security Module
+I was responsible for the end-to-end design and implementation of the security and user management architecture. This included developing the IAM system, integrating biometric authentication, managing user lifecycle (registration to session), and building the administrative oversight dashboard.
 
-Data Protection: Robust password security utilizing SHA-256 hashing.
+### Key Features
 
-Attack Prevention: Integrated CAPTCHA technology to mitigate brute-force and bot-driven attacks.
+### 🔐 Advanced Identity & Security (IAM)
+* **Biometric MFA:** Implemented a secure Multi-Factor Authentication layer using **OpenCV** for real-time facial recognition.
+* **Modern Authentication:** Integrated **OAuth 2.0 (Google SSO)** for seamless and reliable access.
+* **Data Security:** Implemented industry-standard **SHA-256** hashing for credential protection.
+* **Attack Prevention:** Integrated **CAPTCHA** technology to prevent automated brute-force attacks.
+* **Automated Recovery:** Secure password reset workflow using time-sensitive unique tokens sent via **SMTP/JavaMail**.
 
-Account Recovery: Automated, secure password reset system using time-sensitive unique tokens via SMTP/JavaMail.
+### 👤 User Management & Experience
+* **Session Control:** Persistent, secure session management ensuring authorized access throughout the application lifecycle.
+* **Profile Customization:** Full support for user profile management, including desktop photo uploads and real-time updates.
+* **Feedback System:** Built-in validation alerts and confirmation messages for a seamless, professional user experience.
 
-👤 User Experience & Management
-Session Control: Secure, persistent session management ensuring authorized access across the application.
+### 📊 Admin Dashboard & Analytics
+* **Supervision:** Dedicated administrative interface for real-time user management, including instant **block/unban controls**.
+* **Visual Intelligence:** Advanced statistical analysis and dynamic reporting powered by **JFreeChart**.
 
-Profile Management: Fully integrated user profile customization, including desktop photo uploads and real-time data updates.
+### 🛠 Technical Stack
 
-📊 Admin Dashboard & Analytics
-Real-time Supervision: Dedicated interface for administrators to monitor activity, with instant block/unban capabilities to enforce user compliance.
+* **Language:** Java
+* **UI/UX:** JavaFX (MVC Pattern)
+* **Security & Biometrics:** OpenCV, OAuth 2.0, SHA-256
+* **Database:** MySQL (JDBC)
+* **Email Services:** JavaMail API
+* **Visualization:** JFreeChart
 
-Dynamic Visualization: Advanced analytics powered by JFreeChart, providing actionable insights and statistical trends for the travel business.
+### Achievements
+* **Professional-Grade Security:** Engineered an end-to-end IAM solution incorporating multi-layered authentication.
+* **User-Centric Architecture:** Focused on responsiveness and clear system feedback through integrated alert systems.
+* **Data-Driven Administration:** Transformed raw administrative data into visual insights, enabling proactive decision-making.
 
-🛠 Technical Stack
-Core: JavaFX (MVC Pattern)
-
-Identity & Security: OpenCV (Biometrics), OAuth 2.0, SHA-256
-
-Database: MySQL (JDBC)
-
-Communication: JavaMail API (for automated recovery)
-
-Visualization: JFreeChart
-
-Logic: Robust exception handling and real-time user feedback (Alerts & Notifications)
-
-💡 Highlighted Achievements
-Professional Grade Security: Engineered an end-to-end IAM solution that goes beyond basic CRUD operations by including biometric verification and modern SSO.
-
-User-Centric Design: Focused on a seamless experience by providing immediate feedback via integrated notification alerts and user-friendly forms.
-
-Data-Driven Administration: Transformed raw database statistics into visual intelligence, enabling better decision-making for admins.
+---
+*Developed as part of the 2025 Academic Project at ESPRIT.*
