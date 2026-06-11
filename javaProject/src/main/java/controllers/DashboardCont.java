@@ -86,14 +86,14 @@ public class DashboardCont {
     @FXML
     private TableColumn<User, String> emailCol;
     @FXML
-    private TableColumn<User, Void> modifierCol; // Column for the modify button
+    private TableColumn<User, Void> modifierCol; 
     @FXML
-    private TableColumn<User, Void> supprimerCol; // Column for the delete button
+    private TableColumn<User, Void> supprimerCol; 
 
     private UserServiceImpl userService = new UserServiceImpl();
 
     @FXML
-    private VBox editForm; // VBox for editing user details form
+    private VBox editForm;
     @FXML
     private TextField nomField, prenomField,
             emailField, telephoneField, dateNaissanceField,
@@ -116,15 +116,11 @@ public class DashboardCont {
 
     @FXML
     public void initialize() {
-        //BarChart<String, Number> barChart = new BarChart<>(new CategoryAxis(), new NumberAxis());
         initTableColumns();
         loadUserData();
-        /* loadUsersFromDatabase();*/
         updateChartFromTableData();
-        // Initialize columns and table data
 
 
-        // Set custom cell factory for ban/unban column
         banUnbanCol.setCellFactory(col -> new TableCell<User, String>() {
             private final ComboBox<String> comboBox = new ComboBox<>();
 
@@ -140,40 +136,33 @@ public class DashboardCont {
                         updateBanStatusInDatabase(user);
                     }
                 });
-                // Apply chart styling after the chart is fully loaded using Platform.runLater
                 Platform.runLater(() -> {
                     // Apply CSS styling to chart elements
                     registrationBarChart.setStyle("-fx-font-family: 'Arial'; -fx-background-color: transparent;");
 
-                    // Style the legend
                     Node legend = registrationBarChart.lookup(".chart-legend");
                     if (legend != null) {
                         legend.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
                     }
 
-                    // Style the chart title
                     Node chartTitle = registrationBarChart.lookup(".chart-title");
                     if (chartTitle != null) {
                         chartTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
                     }
 
-                    // Style the X-axis (dates)
                     xAxis.setTickLabelFont(new javafx.scene.text.Font("Arial", 14));
                     xAxis.setTickLabelRotation(45);  // Rotate labels for better visibility
                     xAxis.setLabel("Registration Period");
                     xAxis.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-tick-label-fill: black;");
 
-                    // Style the Y-axis (counts)
                     yAxis.setTickLabelFont(new javafx.scene.text.Font("Arial", 12));
                     yAxis.setLabel("Number of Users");
                     yAxis.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-tick-label-fill: black;");
 
-                    // Style the bars
                     for (Node n : registrationBarChart.lookupAll(".chart-bar")) {
                         n.setStyle("-fx-bar-fill: #4682B4;");
                     }
 
-                    // Force refresh of the chart
                     registrationBarChart.layout();
                 });
             }
@@ -196,7 +185,6 @@ public class DashboardCont {
             }
         });
 
-        // Set custom cell factories for buttons (Modifier and Supprimer)
         modifierCol.setCellFactory(getButtonCellFactory("Modifier"));
         supprimerCol.setCellFactory(getButtonCellFactory("Supprimer"));
     }
@@ -223,7 +211,6 @@ public class DashboardCont {
         }
     }
 
-    // Initialize TableView columns
     private void initTableColumns() {
         nomCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNom()));
         prenomCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPrenom()));
@@ -237,7 +224,6 @@ public class DashboardCont {
     }
 
 
-    // Add buttons to the Table (for modify and delete)
     private Callback<TableColumn<User, Void>, TableCell<User, Void>> getButtonCellFactory(String buttonType) {
         return column -> new TableCell<User, Void>() {
             private final Button button = new Button(buttonType);
@@ -265,7 +251,6 @@ public class DashboardCont {
         };
     }
 
-    // Handle the action for modifying a user
     @FXML
     private void handleModifierAction(User user) {
         selectedUser = user;
@@ -279,7 +264,6 @@ public class DashboardCont {
             statutField.setText(selectedUser.getStatut());
             roleField.setText(selectedUser.getRole());
 
-            // Show the form for editing
             editForm.setVisible(true);
         } else {
             // Handle case where no user is selected
@@ -287,7 +271,6 @@ public class DashboardCont {
         }
     }
 
-    // Handle the action for deleting a user
     private void handleDeleteAction(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de suppression");
@@ -310,7 +293,6 @@ public class DashboardCont {
         userTableView.setItems(users); // Update the TableView's items with the new list
     }
 
-    // Handle the save action after editing a user
     @FXML
     private void handleSaveChanges() {
         if (selectedUser != null) {
@@ -324,7 +306,6 @@ public class DashboardCont {
                     return;
                 }
 
-                // Show confirmation alert
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
                 alert.setHeaderText("Save Changes");
@@ -332,7 +313,6 @@ public class DashboardCont {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    // Update user fields
                     selectedUser.setNom(nomField.getText());
                     selectedUser.setPrenom(prenomField.getText());
                     selectedUser.setEmail(emailField.getText());
@@ -350,17 +330,13 @@ public class DashboardCont {
                     selectedUser.setStatut(statutField.getText());
                     selectedUser.setRole(roleField.getText());
 
-                    // Update in database
                     userService.modify(selectedUser);
 
-                    // Refresh the table
                     loadUserData();
                     userTableView.refresh();
 
-                    // Hide the edit form
                     editForm.setVisible(false);
 
-                    // Show success message
                     showAlert("Success", "User information updated successfully", Alert.AlertType.INFORMATION);
                 }
             } catch (Exception e) {
@@ -373,7 +349,6 @@ public class DashboardCont {
     }
 
 
-    // Handle the cancel action (hide the edit form)
     @FXML
     private void handleCancelEdit() {
         editForm.setVisible(false);
@@ -387,20 +362,18 @@ public class DashboardCont {
     @FXML
     private ListView<String> messagesListView;
 
-    // List to store messages
     private List<String> messages = new ArrayList<>();
 
-    // Method to update ListView with the new messages
 
     public void updateMessages() {
-        messagesListView.getItems().clear();  // Clear current list
-        messagesListView.getItems().addAll(messages);  // Add all messages from the list
+        messagesListView.getItems().clear();  
+        messagesListView.getItems().addAll(messages);  
     }
 
     // Method to add a new message
     public void addMessage(String message) {
         messages.add(message);
-        updateMessages();  // Update the UI with the new list of messages
+        updateMessages();  
     }
 
     @FXML
@@ -412,12 +385,11 @@ public class DashboardCont {
             return;
         }
 
-        // Search the user by email
-        User user = userService.searchByEmail(email);  // Assuming searchByEmail method exists in your service class
+        
+        User user = userService.searchByEmail(email);  
 
         if (user != null) {
-            // Display the user details in the table
-            userTableView.getItems().clear();  // Clear any previous data
+            userTableView.getItems().clear(); 
             userTableView.getItems().add(user);
         } else {
             showAlert("Erreur", "Aucun utilisateur trouvé avec cet email", Alert.AlertType.ERROR);
@@ -455,14 +427,11 @@ public class DashboardCont {
     @FXML
     private void handleLogout() {
         try {
-            // Load the login page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginpage.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
             Stage stage = (Stage) userTableView.getScene().getWindow();
 
-            // Set the new scene
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -480,14 +449,11 @@ public class DashboardCont {
     @FXML
     private void handleHomeNavigation() {
         try {
-            // Load the menu page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/menuPage.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
             Stage stage = (Stage) rootPane.getScene().getWindow();
 
-            // Create new scene and set it to the stage
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -500,14 +466,11 @@ public class DashboardCont {
     @FXML
     private void handleEditProfile() {
         try {
-            // Load the edit profile page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditProfile.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
             Stage stage = (Stage) rootPane.getScene().getWindow();
 
-            // Create new scene and set it to the stage
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -523,7 +486,6 @@ public class DashboardCont {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Users Registered");
 
-        // Group the users by month-year of registration
         Map<String, Long> registrationsByMonth = userTableView.getItems().stream()
                 .filter(user -> user.getRegistrationDate() != null)
                 .collect(Collectors.groupingBy(
@@ -535,20 +497,16 @@ public class DashboardCont {
                         Collectors.counting()
                 ));
 
-        // Add the data to the series
         registrationsByMonth.forEach((month, count) -> {
             series.getData().add(new XYChart.Data<>(month, count));
         });
 
-        // Add the series to the chart
         registrationBarChart.getData().add(series);
 
-        // Apply animations to the chart bars
         Platform.runLater(() -> {
             for (XYChart.Data<String, Number> data : series.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    // Apply a fade transition
                     FadeTransition ft = new FadeTransition(Duration.millis(1000), node);
                     ft.setFromValue(0);
                     ft.setToValue(1);
@@ -566,27 +524,24 @@ public class DashboardCont {
 
                     // Add hover effect
                     node.setOnMouseEntered(e -> {
-                        node.setStyle("-fx-bar-fill: #FF7F50;"); // Coral color on hover
+                        node.setStyle("-fx-bar-fill: #FF7F50;"); 
                         node.setScaleX(1.05);
                         node.setScaleY(1.05);
                     });
 
                     node.setOnMouseExited(e -> {
-                        node.setStyle("-fx-bar-fill: #4682B4;"); // Return to original color
+                        node.setStyle("-fx-bar-fill: #4682B4;"); 
                         node.setScaleX(1.0);
                         node.setScaleY(1.0);
                     });
                 }
             }
 
-            // Style the chart after data is loaded
             registrationBarChart.setStyle("-fx-font-family: 'Arial'; -fx-background-color: transparent;");
 
-            // Make the month-year labels (x-axis) bigger and rotated for better visibility
             xAxis.setTickLabelFont(new javafx.scene.text.Font("Arial", 30));
             xAxis.setTickLabelRotation(45);
 
-            // Add some padding to ensure labels don't get cut off
             registrationBarChart.setPadding(new javafx.geometry.Insets(10, 20, 50, 20));
         });
 
@@ -598,89 +553,6 @@ public class DashboardCont {
     }
 }
 
-            /* registrationBarChart.getData().clear();
-
-            Map<String, Long> registrationsByMonth = userTableView.getItems().stream()
-                    .collect(Collectors.groupingBy(
-                            user -> {
-                                LocalDate date = user.getRegistrationDate();
-                                return date.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH) + " " + date.getYear();
-                            },
-                            Collectors.counting()
-                    ));
-
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Users Registered");
-
-            registrationsByMonth.forEach((month, count) -> {
-                series.getData().add(new XYChart.Data<>(month, count));
-            });
-
-            registrationBarChart.getData().add(series);
-
-            // Add animation and value labels
-            for (XYChart.Data<String, Number> data : series.getData()) {
-                Platform.runLater(() -> {
-                    Node node = data.getNode();
-                    if (node != null) {
-                        FadeTransition ft = new FadeTransition(Duration.millis(700), node);
-                        ft.setFromValue(0);
-                        ft.setToValue(1);
-                        ft.play();
-
-                        Text valueText = new Text(data.getYValue().toString());
-                        valueText.setStyle("-fx-font-size: 16px; -fx-fill: black; -fx-font-weight: bold;");
-                        StackPane stackPane = (StackPane) node;
-                        stackPane.getChildren().add(valueText);
-                        StackPane.setAlignment(valueText, Pos.TOP_CENTER);
-                    }
-                });
-            }
-
-            // Apply axis and legend styling
-            Platform.runLater(() -> {
-                Node legend = registrationBarChart.lookup(".chart-legend");
-                if (legend != null)
-                    legend.setStyle("-fx-font-size: 16px; -fx-text-fill: black;");
-
-                Node xLabel = registrationBarChart.getXAxis().lookup(".axis-label");
-                if (xLabel != null)
-                    xLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: black;");
-
-                Node yLabel = registrationBarChart.getYAxis().lookup(".axis-label");
-                if (yLabel != null)
-                    yLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: black;");
-
-                registrationBarChart.getXAxis().lookupAll(".axis-tick-label").forEach(node ->
-                        node.setStyle("-fx-font-size: 8px; -fx-text-fill: black;")
-                );
-                registrationBarChart.getYAxis().lookupAll(".axis-tick-label").forEach(node ->
-                        node.setStyle("-fx-font-size: 16px; -fx-text-fill: black;")
-                );
-            });
-        */
-
-   /* private void loadUsersFromDatabase() {
-        ObservableList<User> users = FXCollections.observableArrayList();
-
-        String query = "SELECT nom, registration_da FROM user";
-
-        try (Connection conn = MaConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String name = rs.getString("nom");
-                LocalDate registrationDate = rs.getDate("registration_da").toLocalDate();
-                users.add(new User(name, registrationDate));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        userTableView.setItems(users);
-    }*/
 
 
 }
