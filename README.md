@@ -1,6 +1,6 @@
 # Business Travel Management System
 
-A robust and secure enterprise-grade application designed for efficient business travel management. This project emphasizes modern security standards (IAM), biometric authentication, and actionable data visualization.
+Secure Identity & Access Management (IAM) module for a Business Travel Management System. Engineered to mitigate authentication risks, this component implements robust security controls including biometric Multi-Factor Authentication, OAuth 2.0 SSO, anti-brute-force CAPTCHA, and secure session management.
 
 #### 👤 Project Contribution
 Lead Developer – User Management & Security Module
@@ -16,9 +16,13 @@ I was responsible for the end-to-end design and implementation of the security a
 * **Automated Recovery:** Secure password reset workflow using time-sensitive unique tokens sent via **SMTP/JavaMail**.
 
 ### 👤 User Management & Experience
-* **Session Control:** Persistent, secure session management ensuring authorized access throughout the application lifecycle.
-* **Profile Customization:** Full support for user profile management, including desktop photo uploads and real-time updates.
-* **Feedback System:** Built-in validation alerts and confirmation messages for a seamless, professional user experience.
+* **Secure Session & RBAC:**  Engineered a centralized, thread-safe session handler using the  **Singleton pattern** to prevent session conflicts. Implemented  **Role-Based Access Control (RBAC)** to ensure that sensitive administrative modules are only accessible via validated session roles.
+
+* **Security-by-Design:**  The session lifecycle is strictly gated behind cryptographic authentication (SHA-256/OAuth 2.0). All sensitive user identifiers are managed in-memory to prevent credential exposure, with automated session invalidation on logout and strict navigation guards to prevent unauthorized access to protected views.
+
+* **Profile Customization:**  Full support for user profile management, including desktop photo uploads and real-time updates.
+
+* **Feedback System:**  Integrated real-time alerts and validation messages to ensure a seamless and transparent user experience.
 
 ### 📊 Admin Dashboard & Analytics
 * **Supervision:** Dedicated administrative interface for real-time user management, including instant **block/unban controls**.
