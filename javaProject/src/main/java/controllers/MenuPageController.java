@@ -21,7 +21,7 @@ import models.UserSession;
 import java.io.IOException;
 import java.net.URL;
 import javafx.scene.control.Label;
-import service.service1Imp;
+import service.UserServiceImpl;
 
 public class MenuPageController {
 
@@ -214,7 +214,7 @@ public class MenuPageController {
                 String role = session.getUserRole();
                 System.out.println("Role from session: " + role);
                 // You need a UserService to fetch the full user object
-                service1Imp userService = new service1Imp();
+                UserServiceImpl userService = new UserServiceImpl();
                 currentUser = userService.searchByEmail(session.getUsername());
 
                 if (currentUser == null) {

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class service1Imp implements service1 <User> {
+public class UserServiceImpl implements UserService <User> {
 
     @Override
     public void add(User user) {

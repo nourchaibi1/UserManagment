@@ -26,7 +26,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import models.User;
 
-import service.service1Imp;
+import service.UserServiceImpl;
 import utils.MaConnection;
 
 
@@ -90,7 +90,7 @@ public class DashboardCont {
     @FXML
     private TableColumn<User, Void> supprimerCol; // Column for the delete button
 
-    private service1Imp userService = new service1Imp();
+    private UserServiceImpl userService = new UserServiceImpl();
 
     @FXML
     private VBox editForm; // VBox for editing user details form

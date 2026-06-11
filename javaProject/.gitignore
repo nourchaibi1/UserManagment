@@ -36,3 +36,22 @@ build/
 
 ### Mac OS ###
 .DS_Store
+# Build output
+target/
+${project.build.directory}/
+
+# Google secret
+client_secret_*.json
+
+# IDE
+.idea/
+
+# Build output
+target/
+${project.build.directory}/
+
+# Google secret
+client_secret_*.json
+
+# IDE
+.idea/

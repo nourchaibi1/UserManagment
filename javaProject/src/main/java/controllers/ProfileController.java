@@ -35,7 +35,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 import models.User;
 import models.UserSession;
-import service.service1Imp;
+import service.UserServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -193,7 +193,7 @@ public class ProfileController {
         profileForm.setVisible(!profileForm.isVisible()); // Toggle visibility
          } */
 
-    private service1Imp userService = new service1Imp (); // or inject it
+    private UserServiceImpl userService = new UserServiceImpl (); // or inject it
 
 
   /*  @FXML
@@ -232,7 +232,7 @@ public class ProfileController {
            e.printStackTrace();
        }
     }*/
-    private service1Imp passwordService = new service1Imp(); // Or use dependency injection
+    private UserServiceImpl passwordService = new UserServiceImpl(); // Or use dependency injection
     @FXML
     private void handleChangePassword() {
         //  the password change dialog

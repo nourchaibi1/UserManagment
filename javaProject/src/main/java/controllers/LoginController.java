@@ -53,7 +53,7 @@ import org.opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import service.service1Imp;
+import service.UserServiceImpl;
 import utils.AuthUtils;
 
 
@@ -151,7 +151,7 @@ public class LoginController {
         FaceRecognition faceRecognition = new FaceRecognition(matchedUsername -> {
             try {
                 // Get the authenticated user
-                service1Imp service = new service1Imp();
+                UserServiceImpl service = new UserServiceImpl();
                 User user = service.searchByName(matchedUsername);
                 String emailText = email.getText();
                 User userr = service.searchByEmail(emailText);
@@ -251,7 +251,7 @@ public class LoginController {
     private void navigateToMainScreen() {
         try {
             // Get the authenticated user
-            service1Imp service = new service1Imp();
+            UserServiceImpl service = new UserServiceImpl();
             // You need to store and retrieve the username from the recognized face
             // This could be extracted from the matched image filename or stored during authentication
             String recognizedUsername = getRecognizedUsername();
@@ -346,7 +346,7 @@ public class LoginController {
             return;
         }
 
-        service1Imp service = new service1Imp();
+        UserServiceImpl service = new UserServiceImpl();
         User user = service.searchByEmail(userEmail);
         //User user = service.searchByEmailAndPassword(userEmail, userPassword);
 
@@ -1108,7 +1108,7 @@ private void handlePasswordReset() {
                 GoogleSignIn.GoogleUserInfo userInfo = GoogleSignIn.getUserInfo(credential);
 
                 // Step 3: Check if user exists in your database
-                service1Imp userService = new service1Imp(); // your service class
+                UserServiceImpl userService = new UserServiceImpl(); // your service class
                 User existingUser = userService.searchByEmail(userInfo.getEmail());
 
                 if (existingUser != null) {

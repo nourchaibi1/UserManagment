@@ -19,7 +19,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
-import service.service1Imp;
+import service.UserServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class Ajouter {
-    private service1Imp service = new service1Imp();
+    private UserServiceImpl service = new UserServiceImpl();
 
     @FXML
     private TextField datedenaissance;
