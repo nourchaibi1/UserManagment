@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-import models.User;  // Ensure this import is present
+import models.User;  
 import utils.GoogleSignIn;
 
 
@@ -64,7 +64,7 @@ import org.opencv.core.Core;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.face.LBPHFaceRecognizer;
-//oublier pass
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -227,25 +227,9 @@ public class LoginController {
     }
 
 
-   /* @FXML
-    private ImageView profileImageView;
-    private void showAlert(String title, String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
-    }
-*/
+  
 
-    // Helper method to get username from user ID
-   /* private String getUserNameById(int userId) {
-        // This method should retrieve the username associated with the user ID from your database
-        // For demonstration, returning a placeholder
-        return "User #" + userId;
-    }*/
+   
     private String recognizedUser;
     // Helper method to navigate to main screen after successful login
     private void navigateToMainScreen() {
@@ -285,28 +269,7 @@ public class LoginController {
         }
     }
 
-    // Helper method to get the username of the recognized face
-   /* private String getRecognizedUsername() {
-
-        // Return the username that was stored during face recognition
-        if (recognizedUser != null && !recognizedUser.isEmpty()) {
-            return recognizedUser;
-        }
-
-        // Fallback: Check if there are any registered faces
-        File registeredFacesDir = new File("registered_faces");
-        File[] registeredFaces = registeredFacesDir.listFiles((dir, name) -> name.endsWith(".jpg"));
-
-        if (registeredFaces != null && registeredFaces.length > 0) {
-            // Return the first registered username as a fallback
-            return registeredFaces[0].getName().replace(".jpg", "");
-        }
-
-        return "default@email.com"; // Fallback - replace with actual logic
-
-
-        //System.out.println("Login successful - navigating to main screen");
-    }*/
+  
 
     private boolean validateCredentials(String email, String password) {
         String storedPasswordHash = userDatabase.get(email);
@@ -597,22 +560,17 @@ public class LoginController {
     public void setProfileController(ProfileController controller) {
         this.profileController = controller;
     }
-    //they say
-    //they say
-//they say
+  
 @FXML
 private void handlePasswordReset() {
     System.out.println("Current reset tokens in system: " + resetTokens);
-    // a dialog to get the token and new password
     Dialog<Pair<String, String>> dialog = new Dialog<>();
     dialog.setTitle("Reset Password");
     dialog.setHeaderText("Enter your reset token and new password");
 
-    // Set the button types
     ButtonType resetButtonType = new ButtonType("Reset", ButtonBar.ButtonData.OK_DONE);
     dialog.getDialogPane().getButtonTypes().addAll(resetButtonType, ButtonType.CANCEL);
 
-    // Create the token and password fields
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
@@ -632,11 +590,9 @@ private void handlePasswordReset() {
     grid.add(new Label("Confirm Password:"), 0, 2);
     grid.add(confirmPasswordField, 1, 2);
 
-    // Enable/Disable reset button depending on whether a token was entered
     Node resetButton = dialog.getDialogPane().lookupButton(resetButtonType);
     resetButton.setDisable(true);
 
-    // Validation: Enable button when both fields have text and passwords match
     BooleanBinding isValid = Bindings.createBooleanBinding(() ->
                     !tokenField.getText().trim().isEmpty() &&
                             !passwordField.getText().trim().isEmpty() &&
@@ -649,7 +605,6 @@ private void handlePasswordReset() {
 
     dialog.getDialogPane().setContent(grid);
 
-    // Convert the result to a token-password pair when the reset button is clicked
     dialog.setResultConverter(dialogButton -> {
         if (dialogButton == resetButtonType) {
             return new Pair<>(tokenField.getText(), passwordField.getText());
@@ -657,7 +612,6 @@ private void handlePasswordReset() {
         return null;
     });
 
-    // Process the result
     Optional<Pair<String, String>> result = dialog.showAndWait();
     result.ifPresent(tokenPassword -> {
         String token = tokenPassword.getKey();
@@ -671,12 +625,10 @@ private void handlePasswordReset() {
             return;
         }
 
-        // Print out values for debugging
         System.out.println("Entered Token: " + token);
         System.out.println("Associated Email: " + email);
         System.out.println("New Password (before hashing): " + newPassword);
 
-        // Update password with hashed new password
         String hashedPassword = AuthUtils.hashPassword(newPassword);
         System.out.println("Hashed Password: " + hashedPassword);
 
@@ -691,26 +643,21 @@ private void handlePasswordReset() {
                 if (rowsAffected > 0) {
                     System.out.println("Password updated successfully.");
 
-                    // Update in-memory map if it exists
                     if (userDatabase != null) {
                         userDatabase.put(email, hashedPassword);
                     }
 
-                    // Remove the used token - do this before any potential errors can occur
                     resetTokens.remove(token);
 
-                    // Show success message
                     showAlert(Alert.AlertType.INFORMATION, "Password Reset",
                             "Your password has been successfully reset. You can now log in with your new password.");
 
-                    // Create a separate connection for fetching user data
                     try (Connection conn2 = MaConnection.getConnection();
                          PreparedStatement stmtFetch = conn2.prepareStatement("SELECT * FROM user WHERE email = ?")) {
                         stmtFetch.setString(1, email);
                         ResultSet rs = stmtFetch.executeQuery();
 
                         if (rs.next()) {
-                            // Build updated User object
                             User updatedUser = new User();
                             updatedUser.setEmail(rs.getString("email"));
                             updatedUser.setMotdepasse(rs.getString("motDePasse"));
@@ -727,7 +674,6 @@ private void handlePasswordReset() {
                             updatedUser.setStatut(rs.getString("statut"));
                             updatedUser.setRole(rs.getString("role"));
 
-                            // If there's an ID column, make sure to set it
                             try {
                                 int id = rs.getInt("id");
                                 if (!rs.wasNull()) {
@@ -737,30 +683,25 @@ private void handlePasswordReset() {
                                 System.out.println("Note: Could not set user ID - column may not exist: " + e.getMessage());
                             }
 
-                            // Update user session
                             UserSession.getInstance().updateUserInfo(updatedUser);
 
-                            // Update profile controller if available
                             if (profileController != null) {
                                 profileController.setCurrentUser(updatedUser);
                             } else {
                                 System.out.println("Profile controller not set");
                             }
 
-                            // Navigate to profile screen
-                            final User finalUpdatedUser = updatedUser; // Create final copy for lambda
+                            final User finalUpdatedUser = updatedUser; 
                             Platform.runLater(() -> {
                                 try {
                                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/menuPage.fxml"));
                                     Parent root = loader.load();
 
-                                    // Get the ProfileController and pass the updated user
                                     ProfileController controller = loader.getController();
                                     if (controller != null) {
                                         controller.setCurrentUser(finalUpdatedUser);
                                     }
 
-                                    // Find the current stage
                                     Stage currentStage = null;
                                     for (javafx.stage.Window window : javafx.stage.Window.getWindows()) {
                                         if (window instanceof Stage && window.isShowing()) {
@@ -773,7 +714,6 @@ private void handlePasswordReset() {
                                         currentStage.setScene(new Scene(root));
                                         currentStage.show();
                                     } else {
-                                        // If we can't find an active stage, create a new one
                                         Stage newStage = new Stage();
                                         newStage.setScene(new Scene(root));
                                         newStage.show();
@@ -800,180 +740,6 @@ private void handlePasswordReset() {
     });
 }
 
-
-        /*
-    System.out.println("Current reset tokens in system: " + resetTokens);
-    // a dialog to get the token and new password
-    Dialog<Pair<String, String>> dialog = new Dialog<>();
-    dialog.setTitle("Reset Password");
-    dialog.setHeaderText("Enter your reset token and new password");
-
-    // Set the button types
-    ButtonType resetButtonType = new ButtonType("Reset", ButtonBar.ButtonData.OK_DONE);
-    dialog.getDialogPane().getButtonTypes().addAll(resetButtonType, ButtonType.CANCEL);
-
-    //  the token and password fields
-    GridPane grid = new GridPane();
-    grid.setHgap(10);
-    grid.setVgap(10);
-    grid.setPadding(new Insets(20, 150, 10, 10));
-
-    TextField tokenField = new TextField();
-    tokenField.setPromptText("Reset token");
-    PasswordField passwordField = new PasswordField();
-    passwordField.setPromptText("New password");
-    PasswordField confirmPasswordField = new PasswordField();
-    confirmPasswordField.setPromptText("Confirm password");
-
-    grid.add(new Label("Token:"), 0, 0);
-    grid.add(tokenField, 1, 0);
-    grid.add(new Label("New Password:"), 0, 1);
-    grid.add(passwordField, 1, 1);
-    grid.add(new Label("Confirm Password:"), 0, 2);
-    grid.add(confirmPasswordField, 1, 2);
-
-    // Enable/Disable reset button depending on whether a token was entered
-    Node resetButton = dialog.getDialogPane().lookupButton(resetButtonType);
-    resetButton.setDisable(true);
-
-    // Validation: Enable button when both fields have text and passwords match
-    BooleanBinding isValid = Bindings.createBooleanBinding(() ->
-                    !tokenField.getText().trim().isEmpty() &&
-                            !passwordField.getText().trim().isEmpty() &&
-                            passwordField.getText().equals(confirmPasswordField.getText()),
-            tokenField.textProperty(),
-            passwordField.textProperty(),
-            confirmPasswordField.textProperty());
-
-    resetButton.disableProperty().bind(isValid.not());
-
-    dialog.getDialogPane().setContent(grid);
-
-    // Convert the result to a token-password pair when the reset button is clicked
-    dialog.setResultConverter(dialogButton -> {
-        if (dialogButton == resetButtonType) {
-            return new Pair<>(tokenField.getText(), passwordField.getText());
-        }
-        return null;
-    });
-
-    // Process the result
-    Optional<Pair<String, String>> result = dialog.showAndWait();
-    result.ifPresent(tokenPassword -> {
-        String token = tokenPassword.getKey();
-        String newPassword = tokenPassword.getValue();
-
-        // Verify the token and reset the password
-        String email = resetTokens.get(token);
-        if (email == null) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Token",
-                    "This password reset token is invalid or has expired.");
-            return;
-        }
-
-// Print out values for debugging
-        System.out.println("Entered Token: " + token);
-        System.out.println("Associated Email: " + email);
-        System.out.println("New Password (before hashing): " + newPassword);
-
-        // Update password with hashed new password
-        String hashedPassword = AuthUtils.hashPassword(newPassword);
-        System.out.println("Hashed Password: " + hashedPassword);
-        try (Connection conn = MaConnection.getConnection()) {
-            String updateQuery = "UPDATE user SET motDePasse = ? WHERE email = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
-                stmt.setString(1, hashedPassword);
-                stmt.setString(2, email);
-                int rowsAffected = stmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Password updated successfully.");
-                    // Sync in-memory map with new password
-                    userDatabase.put(email, hashedPassword);
-
-                    String Query = "SELECT * FROM user WHERE email = ?";
-
-                    // After the update, use a new connection to fetch user info
-                  try (Connection conn2 = MaConnection.getConnection();
-                         PreparedStatement stmtFetch = conn2.prepareStatement("SELECT * FROM user WHERE email = ?")) {
-                        stmtFetch.setString(1, email);
-                        ResultSet rs = stmtFetch.executeQuery();
-                        if (rs.next()) {
-                            String updatedEmail = rs.getString("email");
-                            String updatedPassword = rs.getString("motDePasse");
-
-                            // Refresh any session variables or UI components with updated data
-                            System.out.println("Updated user data: Email: " + updatedEmail + ", Password: " + updatedPassword);
-// ✅ Instead of just printing, build a new User object:
-                            User updatedUser = new User();
-                            updatedUser.setEmail(updatedEmail);
-                            updatedUser.setMotdepasse(updatedPassword);
-                            updatedUser.setNom(rs.getString("nom"));
-                            updatedUser.setPrenom(rs.getString("prenom"));
-                            updatedUser.setNumerotelephone(rs.getString("numTelephone"));
-                            updatedUser.setDatedenaissance(rs.getDate("dateNaissance").toLocalDate());
-                            updatedUser.setStatut(rs.getString("statut"));
-                            updatedUser.setRole(rs.getString("role"));
-
-                            // ✅ Now update UI
-                            UserSession.getInstance().updateUserInfo(updatedUser);
-                            Platform.runLater(() -> {
-                                Stage stage = (Stage) tokenField.getScene().getWindow();
-                                showAlert(Alert.AlertType.INFORMATION, "Password Reset",
-                                        "Your password has been successfully reset. You can now log in.");
-                                // Add any scene update or auto-login code here if needed
-                            });
-// Validate that the session was updated successfully
-                            System.out.println("UserSession updated with new user data");
-
-// If you have other controllers that reference the user data, update them here
-                            if (profileController != null) {
-                            profileController.setCurrentUser(updatedUser);} else System.out.println("Profile controller not set");
-                            // Example: Update the session or UI with the updated password if needed
-                            // session.setAttribute("userEmail", updatedEmail);
-                            // session.setAttribute("userPassword", updatedPassword);
-                            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/profile.fxml"));
-                                Parent root = loader.load();
-
-                                // Get the ProfileController and pass the updated user
-                                ProfileController controller = loader.getController();
-                                controller.setCurrentUser(updatedUser);
-
-                                // Switch to the new scene (without using event)
-                                Stage stage = (Stage) tokenField.getScene().getWindow(); // or passwordField.getScene().getWindow()
-                                stage.setScene(new Scene(root));
-                                stage.show();
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch updated user data.");
-                    }
-                    resetTokens.remove(token);
-                    showAlert(Alert.AlertType.INFORMATION, "Password Reset", "Your password has been successfully reset.");
-                } else {
-                    System.out.println("Failed to update password.");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to update password in the database.");
-        }
-        System.out.println("Hashed Password: " + hashedPassword);
-          /*  // Update password with hashed new password
-            userDatabase.put(email,hashedPassword );
-        System.out.println("Database content after password reset: " + userDatabase);
-            // Remove the used token*/
-
-          /*  showAlert(Alert.AlertType.INFORMATION, "Password Reset",
-                    "Your password has been successfully reset. You can now log in with your new password.");
-
-    });}
-*/
     private void showProgressDialog(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -1019,12 +785,10 @@ private void handlePasswordReset() {
         pulse.setCycleCount(Timeline.INDEFINITE);
         pulse.setAutoReverse(true);
         pulse.play();
-        // Add border circle above the ImageView inside the StackPane
         ((StackPane) logoImageView.getParent()).getChildren().add(border);
         captchaCanvas = new Canvas(200, 80);
         captchaContainer.getChildren().add(captchaCanvas);
 
-        // Generate initial CAPTCHA
         generateCaptcha();
     }
 
@@ -1043,11 +807,9 @@ private void handlePasswordReset() {
         }
         captchaCode = sb.toString();
 
-        // Draw on canvas
         GraphicsContext gc = captchaCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, captchaCanvas.getWidth(), captchaCanvas.getHeight());
 
-        // Background
         gc.setFill(Color.rgb(240, 240, 240));
         gc.fillRect(0, 0, captchaCanvas.getWidth(), captchaCanvas.getHeight());
 
@@ -1123,17 +885,16 @@ private void handlePasswordReset() {
                     // Also store the full User object for easy access later
                     UserSession.getInstance().setUserData("user", loggedUser);
 
-// Optional if your controller needs it immediately:
                     this.currentUser = loggedUser;
                 } else {
                     // Step 4B: If not, register a new user
-                    String password = generateRandomPassword(); // you can implement this
+                    String password = generateRandomPassword(); 
                     User newUser = new User(
-                            userInfo.getGivenName(),       // nom
-                            userInfo.getFamilyName(),      // prenom
-                            "[\"ROLE_CLIENT\"]",           // role
-                            password,                     // motdepasse
-                            userInfo.getEmail(),          // email
+                            userInfo.getGivenName(),      
+                            userInfo.getFamilyName(),      
+                            "[\"ROLE_CLIENT\"]",           
+                            password,                     
+                            userInfo.getEmail(),          
                             "",
                             new java.util.Date(),
                             "actif",
@@ -1160,7 +921,6 @@ private void handlePasswordReset() {
                 stage.setScene(new Scene(root));
                 stage.show();
 
-                // Close current window
                 ((javafx.scene.Node)(event.getSource())).getScene().getWindow().hide();
             }
         } catch (Exception e) {
