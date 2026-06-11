@@ -55,3 +55,6 @@ client_secret_*.json
 
 # IDE
 .idea/
+
+client_secret_*.json
+tokens/
