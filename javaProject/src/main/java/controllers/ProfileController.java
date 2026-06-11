@@ -1,4 +1,3 @@
-//they say
 package controllers;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -79,28 +78,23 @@ public class ProfileController {
     private VBox profileForm;
     @FXML
     private ImageView logoImage;
-    // This will be the user's profile
-    private User currentUser;//store the currentuserdata
+    private User currentUser;
     public void setCurrentUser(User user) {
         this.currentUser = user;
 
-        // Populate the profile fields with the current user's data
         nomField.setText(currentUser.getNom());
         prenomField.setText(currentUser.getPrenom());
         emailField.setText(currentUser.getEmail());
         phoneField.setText(currentUser.getNumerotelephone());
 
-        // Set Date de naissance (assuming it's a LocalDate or similar)
         if (currentUser.getDatedenaissance() != null) {
             birthDatePicker.setValue(currentUser.getDatedenaissance());
         }
 
-        // Set Statut and Role (if applicable)
         statutField.setText(currentUser.getStatut());
-        roleField.setText(currentUser.getRole()); // Optional: Disable editing if needed
+        roleField.setText(currentUser.getRole()); 
 
 
-        // Show the profile form
         profileForm.setVisible(true);
     }
 
@@ -116,18 +110,16 @@ public class ProfileController {
             return;
         }
 
-        // Toggle edit mode
         isEditMode = !isEditMode;
 
-        // Enable or disable fields based on edit mode
         nomField.setEditable(isEditMode);
         prenomField.setEditable(isEditMode);
         emailField.setEditable(isEditMode);
         phoneField.setEditable(isEditMode);
-        birthDatePicker.setDisable(!isEditMode);  // DatePicker uses disable instead of editable
+        birthDatePicker.setDisable(!isEditMode); 
         statutField.setEditable(isEditMode);
-        roleField.setEditable(isEditMode); // You can keep this non-editable if you want
-        saveButton.setVisible(isEditMode);//only vesible kie yenzel aleha
+        roleField.setEditable(isEditMode); 
+        saveButton.setVisible(isEditMode);
         // Show or hide the form (optional)
         profileForm.setVisible(true);
     }
@@ -162,76 +154,10 @@ public class ProfileController {
         saveButton.setVisible(false);  }
 
 
-
-
-
-      /*  System.out.println("handleEditProfile() triggered");
-        if (currentUser == null) {
-            System.out.println("currentUser is null!");
-            showAlert("Error", "User is not logged in or currentUser is not set.");
-            return;
-        }
-        if (!profileForm.isVisible()) {
-            // Only populate fields when showing the form
-            // Only populate fields when showing the form
-            nomField.setText(currentUser.getNom());
-            prenomField.setText(currentUser.getPrenom()); // Added Prénom
-            emailField.setText(currentUser.getEmail());
-            phoneField.setText(currentUser.getNumerotelephone());
-
-            // Set Date de naissance (assuming LocalDate)
-            if (currentUser.getDatedenaissance() != null) {
-                birthDatePicker.setValue(currentUser.getDatedenaissance());
-            }
-
-            // Set Statut and Role
-            statutField.setText(currentUser.getStatut());
-            roleField.setText(currentUser.getRole()); // (Optional: Disable editing in FXML)
-        }
-
-
-        profileForm.setVisible(!profileForm.isVisible()); // Toggle visibility
-         } */
-
     private UserServiceImpl userService = new UserServiceImpl (); // or inject it
 
 
-  /*  @FXML
-    private void handleSaveChanges() {
-        // Code to save changes to profile
-       try { String newNom = nomField.getText();
-        String newPrenom = prenomField.getText();
-        String newEmail = emailField.getText();
-        String newPhone = phoneField.getText();
-        LocalDate newBirthDate = birthDatePicker.getValue();
-        String newStatut = statutField.getText();
-        String newRole = roleField.getText(); // Might be read-only
 
-        if (newNom.isEmpty() || newEmail.isEmpty()) {
-            showAlert("Validation Error", "Name and email are required fields.");
-            return;
-        }
-        // Here, update the user's details in the backend/database
-        currentUser.setNom(newNom);
-        currentUser.setPrenom(newPrenom);
-        currentUser.setEmail(newEmail);
-        currentUser.setNumerotelephone(newPhone);
-        currentUser.setDatedenaissance(newBirthDate);
-        currentUser.setStatut(newStatut);
-
-
-        // Save to database (you will have your service layer here)
-           // 🔧 Save to database
-           userService.modify(currentUser);
-        // Confirmation message
-        showAlert("Profile updated successfully", "Your profile has been updated.");
-           profileForm.setVisible(false);
-
-       } catch (Exception e) {
-           showAlert("Error", "Failed to update profile: " + e.getMessage());
-           e.printStackTrace();
-       }
-    }*/
     private UserServiceImpl passwordService = new UserServiceImpl(); // Or use dependency injection
     @FXML
     private void handleChangePassword() {
@@ -265,11 +191,9 @@ public class ProfileController {
 
         dialog.getDialogPane().setContent(grid);
 
-        // Enable/disable change button depending on valid input
         Node changeButton = dialog.getDialogPane().lookupButton(changeButtonType);
         changeButton.setDisable(true);
 
-        // Add validation
         newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
             changeButton.setDisable(!validatePasswords(newPassword.getText(), confirmPassword.getText()));
         });
@@ -278,7 +202,6 @@ public class ProfileController {
             changeButton.setDisable(!validatePasswords(newPassword.getText(), confirmPassword.getText()));
         });
 
-        // Convert result to pair when change button is clicked
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == changeButtonType) {
                 return new Pair<>(currentPassword.getText(), newPassword.getText());
@@ -286,19 +209,17 @@ public class ProfileController {
             return null;
         });
 
-        // Show dialog and process result
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(passwords -> {
             String currentPwd = passwords.getKey();
             String newPwd = passwords.getValue();
 
-            // Call your service method
             try {
                 boolean success = passwordService.changerMotDePasse(
                         currentUser.getId(),
-                        currentPwd,  // Do not hash the current password here!
-                        newPwd      // Do not hash the new password here either, hash it in the service method!
+                        currentPwd,  
+                        newPwd     
                 );
 
                 if (success) {
@@ -312,88 +233,8 @@ public class ProfileController {
         });
     }
 
-   /* @FXML
-    private void handleChangePassword() {
-        //tasna3 passw change dialog
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Change Password");
-        dialog.setHeaderText("Enter your current and new password");
-
-        // Set the button types
-        ButtonType changeButtonType = new ButtonType("Change", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(changeButtonType, ButtonType.CANCEL);
-        //tasna3 pass fileds
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        PasswordField currentPassword = new PasswordField();
-        currentPassword.setPromptText("Current Password");
-        PasswordField newPassword = new PasswordField();
-        newPassword.setPromptText("New Password (minimum 8 characters)");
-        PasswordField confirmPassword = new PasswordField();
-        confirmPassword.setPromptText("Confirm New Password");
-
-        grid.add(new Label("Current Password:"), 0, 0);
-        grid.add(currentPassword, 1, 0);
-        grid.add(new Label("New Password:"), 0, 1);
-        grid.add(newPassword, 1, 1);
-        grid.add(new Label("Confirm Password:"), 0, 2);
-        grid.add(confirmPassword, 1, 2);
-
-        dialog.getDialogPane().setContent(grid);
-
-        // Enable/disable change button depending on valid input
-        Node changeButton = dialog.getDialogPane().lookupButton(changeButtonType);
-        changeButton.setDisable(true);
-
-        // Add validation
-        newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            changeButton.setDisable(!validatePasswords(newPassword.getText(), confirmPassword.getText()));
-        });
-
-        confirmPassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            changeButton.setDisable(!validatePasswords(newPassword.getText(), confirmPassword.getText()));
-        });
-
-        // Convert result to pair when change button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == changeButtonType) {
-                return new Pair<>(currentPassword.getText(), newPassword.getText());
-            }
-            return null;
-        });
-
-        // Show dialog and process result
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(passwords -> {
-            String currentPwd = passwords.getKey();
-            String newPwd = passwords.getValue();
-            newPwd = AuthUtils.hashPassword(newPwd);
-
-            // Call your service method
-            try {
-                boolean success =passwordService.changerMotDePasse(
-                        currentUser.getId(),
-                        currentPwd,
-                        newPwd
-                );
-
-                if (success) {
-                    showAlert("Success", "Password changed successfully!");
-                } else {
-                    showAlert("Error", "Failed to change password. Check your current password.");
-                }
-            } catch (Exception e) {
-                showAlert("Error", "An error occurred: " + e.getMessage());
-            }
-        });
-    }*/
-
+ 
     private boolean validatePasswords(String newPwd, String confirmPwd) {
-        // Basic validation - you can add more complex rules
         return newPwd.equals(confirmPwd) && newPwd.length() >= 6;
     }
 
@@ -401,7 +242,6 @@ public class ProfileController {
 
     @FXML
     private void handleDeleteAccount() {
-        // Ask for confirmation before deleting account
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Delete Account");
         alert.setHeaderText("Are you sure you want to delete your account?");
@@ -410,18 +250,14 @@ public class ProfileController {
                     try {
                         Stage stage = (Stage) profileForm.getScene().getWindow();
 
-                        // Delete user account
-                        userService.delete(currentUser.getId()); // Make sure currentUser and delete() are defined
+                        userService.delete(currentUser.getId()); 
 
-                        // Show confirmation
                         Alert info = new Alert(AlertType.INFORMATION);
                         info.setTitle("Account Deleted");
                         info.setHeaderText(null);
                         info.setContentText("Your account has been successfully deleted.");
                         info.showAndWait();
 
-                        // Redirect to login or close app
-                        // Example: Go back to login
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginpage.fxml"));
                         Parent root = loader.load();
                         stage.setScene(new Scene(root));
@@ -438,7 +274,6 @@ public class ProfileController {
 
 
 
-    // Method to show alert messages
     private void showAlert(String title, String content) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -457,7 +292,6 @@ public class ProfileController {
     private BorderPane mainBorderPane;
     @FXML
     private void initialize() {
-        // Start off-screen to the left and invisible
         mainBorderPane.setTranslateX(-300);
         mainBorderPane.setOpacity(0);
 
@@ -472,12 +306,10 @@ public class ProfileController {
         ParallelTransition animation = new ParallelTransition(fade, slide);
         animation.play();
 
-        // Initialize the profile image view
         profileImageView.setFitWidth(150);
         profileImageView.setFitHeight(150);
         profileImageView.setPreserveRatio(true);
         
-        // Load existing profile image if available
         loadProfileImage();
         UserSession session = UserSession.getInstance();
         if (dashboardButton != null) {
@@ -486,17 +318,15 @@ public class ProfileController {
         if (welcomeLabel != null) {
             welcomeLabel.setText("Welcome, " + session.getUsername());
         }
-        // Now get the full User object from session data
         User currentUser = (User) session.getUserData("userObject");
         if (currentUser != null) {
-            // Fill your text fields from the User object
             nomField.setText(currentUser.getNom());
             prenomField.setText(currentUser.getPrenom());
             emailField.setText(currentUser.getEmail());
-            phoneField.setText(currentUser.getNumerotelephone()); // assuming you have getPhone()
+            phoneField.setText(currentUser.getNumerotelephone()); 
 
             if (currentUser.getDatedenaissance() != null) {
-                birthDatePicker.setValue(currentUser.getDatedenaissance()); // assuming LocalDate
+                birthDatePicker.setValue(currentUser.getDatedenaissance()); 
             }
 
             statutField.setText(currentUser.getStatut());
@@ -544,11 +374,9 @@ public class ProfileController {
                     profileDir.mkdir();
                 }
 
-                // Copy the selected file to profile_images directory
                 String newPath = "profile_images/" + currentUser.getId() + ".jpg";
                 Files.copy(selectedFile.toPath(), new File(newPath).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                // Update the image view
                 Image image = new Image(new File(newPath).toURI().toString());
                 profileImageView.setImage(image);
 
@@ -576,7 +404,6 @@ public class ProfileController {
             cameraView.setFitHeight(480);
             cameraView.setPreserveRatio(true);
 
-            //  capture button
             Button captureButton = new Button("Capture Photo");
 
             root.getChildren().addAll(cameraView, captureButton);
@@ -584,14 +411,12 @@ public class ProfileController {
             cameraStage.setScene(scene);
             cameraStage.setTitle("Take Photo");
 
-            // Initialize camera
             VideoCapture camera = new VideoCapture(0);
             if (!camera.isOpened()) {
                 showAlert("Error", "Could not open camera");
                 return;
             }
 
-            // Start camera feed
             Thread cameraThread = new Thread(() -> {
                 Mat frame = new Mat();
                 while (cameraStage.isShowing()) {
@@ -605,22 +430,18 @@ public class ProfileController {
             cameraThread.setDaemon(true);
             cameraThread.start();
 
-            // Handle capture button
             captureButton.setOnAction(e -> {
                 Mat frame = new Mat();
                 if (camera.read(frame)) {
                     try {
-                        // Create profile_images directory if it doesn't exist
                         File profileDir = new File("profile_images");
                         if (!profileDir.exists()) {
                             profileDir.mkdir();
                         }
 
-                        // Save the captured image
                         String imagePath = "profile_images/" + currentUser.getId() + ".jpg";
                         Imgcodecs.imwrite(imagePath, frame);
 
-                        // Update profile image
                         Image image = mat2Image(frame);
                         Platform.runLater(() -> {
                             profileImageView.setImage(image);
@@ -654,14 +475,11 @@ public class ProfileController {
     @FXML
     private void handleLogout() {
         try {
-            // Load the login page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginpage.fxml"));
             Parent root = loader.load();
             
-            // Get the current stage
             Stage stage = (Stage) profileImageView.getScene().getWindow();
             
-            // Set the new scene
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -679,11 +497,9 @@ public class ProfileController {
     @FXML
     public void handleMenuPage(javafx.event.ActionEvent event) {
         try {
-            // Load the home/menu page FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/menuPage.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage using the button's event
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             // Set the new scene
@@ -701,137 +517,7 @@ public class ProfileController {
         }
     }
 
-   /* @FXML
-    private void handleEditProfile() {
-        System.out.println("handleEditProfile() triggered");
-        if (currentUser == null) {
-            System.out.println("currentUser is null!");
-            showAlert("Error", "User is not logged in or currentUser is not set.");
-            return;
-        }
-        if (!profileForm.isVisible()) {
-            // Only populate fields when showing the form
-            // Only populate fields when showing the form
-            nomField.setText(currentUser.getNom());
-            prenomField.setText(currentUser.getPrenom()); // Added Prénom
-            emailField.setText(currentUser.getEmail());
-            phoneField.setText(currentUser.getNumerotelephone());
-
-            // Set Date de naissance (assuming LocalDate)
-            if (currentUser.getDatedenaissance() != null) {
-                birthDatePicker.setValue(currentUser.getDatedenaissance());
-            }
-
-            // Set Statut and Role
-            statutField.setText(currentUser.getStatut());
-            roleField.setText(currentUser.getRole()); // (Optional: Disable editing in FXML)
-        }
-
-
-        profileForm.setVisible(!profileForm.isVisible()); // Toggle visibility
-    }*/
-   /* @FXML
-    private void handleSaveChanges() {
-        // Code to save changes to profile
-        try { String newNom = nomField.getText();
-            String newPrenom = prenomField.getText();
-            String newEmail = emailField.getText();
-            String newPhone = phoneField.getText();
-            LocalDate newBirthDate = birthDatePicker.getValue();
-            String newStatut = statutField.getText();
-            String newRole = roleField.getText(); // Might be read-only
-
-            if (newNom.isEmpty() || newEmail.isEmpty()) {
-                showAlert("Validation Error", "Name and email are required fields.");
-                return;
-            }
-            // Here, update the user's details in the backend/database
-            currentUser.setNom(newNom);
-            currentUser.setPrenom(newPrenom);
-            currentUser.setEmail(newEmail);
-            currentUser.setNumerotelephone(newPhone);
-            currentUser.setDatedenaissance(newBirthDate);
-            currentUser.setStatut(newStatut);
-
-
-            // Save to database (you will have your service layer here)
-            // 🔧 Save to database
-            userService.modify(currentUser);
-            // Confirmation message
-            showAlert("Profile updated successfully", "Your profile has been updated.");
-            profileForm.setVisible(false);
-
-        } catch (Exception e) {
-            showAlert("Error", "Failed to update profile: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }*/
-
-        // Code to save changes to profile
-       /* try {
-            String newNom = nomField.getText();
-            String newPrenom = prenomField.getText();
-            String newEmail = emailField.getText();
-            String newPhone = phoneField.getText();
-            LocalDate newBirthDate = birthDatePicker.getValue();
-            String newStatut = statutField.getText();
-            String newRole = roleField.getText(); // Might be read-only
-
-            if (newNom.isEmpty() || newEmail.isEmpty()) {
-                showAlert("Validation Error", "Name and email are required fields.");
-                return;
-            }
-            // Here, update the user's details in the backend/database
-            currentUser.setNom(newNom);
-            currentUser.setPrenom(newPrenom);
-            currentUser.setEmail(newEmail);
-            currentUser.setNumerotelephone(newPhone);
-            currentUser.setDatedenaissance(newBirthDate);
-            currentUser.setStatut(newStatut);
-
-
-            // Save to database (you will have your service layer here)
-            // 🔧 Save to database
-            userService.modify(currentUser);
-            // Confirmation message
-            showAlert("Profile updated successfully", "Your profile has been updated.");
-            profileForm.setVisible(true);
-
-        } catch (Exception e) {
-            showAlert("Error", "Failed to update profile: " + e.getMessage());
-            e.printStackTrace();
-        }*/
-
-
-     /* @FXML
-        private void handleEditProfile() {
-            System.out.println("handleEditProfile() triggered");
-            if (currentUser == null) {
-                System.out.println("currentUser is null!");
-                showAlert("Error", "User is not logged in or currentUser is not set.");
-                return;
-            }
-            if (!profileForm.isVisible()) {
-                // Only populate fields when showing the form
-                // Only populate fields when showing the form
-                nomField.setText(currentUser.getNom());
-                prenomField.setText(currentUser.getPrenom()); // Added Prénom
-                emailField.setText(currentUser.getEmail());
-                phoneField.setText(currentUser.getNumerotelephone());
-
-                // Set Date de naissance (assuming LocalDate)
-                if (currentUser.getDatedenaissance() != null) {
-                    birthDatePicker.setValue(currentUser.getDatedenaissance());
-                }
-
-                // Set Statut and Role
-                statutField.setText(currentUser.getStatut());
-                roleField.setText(currentUser.getRole()); // (Optional: Disable editing in FXML)
-            }
-
-
-            profileForm.setVisible(!profileForm.isVisible()); // Toggle visibility
-        }*/
+  
     @FXML
     private void handleDashboard() {
     }
