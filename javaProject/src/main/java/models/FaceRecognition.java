@@ -33,11 +33,9 @@ public class FaceRecognition {
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         } catch (UnsatisfiedLinkError e) {
             try {
-                // If that fails, try to load from the OpenCV build directory
                 String opencvPath = "C:\\opencv\\opencv\\build\\java\\x64\\opencv_java455.dll";
                 System.load(opencvPath);
             } catch (UnsatisfiedLinkError e2) {
-                // If both fail, try to load from the current directory
                 try {
                     System.load(new File("opencv_java455.dll").getAbsolutePath());
                 } catch (UnsatisfiedLinkError e3) {
@@ -56,13 +54,11 @@ public class FaceRecognition {
         try {
             System.out.println("OpenCV loaded successfully: " + Core.VERSION);
 
-            // Initialize face detector
             faceDetector = new CascadeClassifier(CASCADE_PATH);
             if (faceDetector.empty()) {
                 throw new RuntimeException("Error: Could not load face detector cascade classifier");
             }
 
-            // Initialize known faces list
             knownFaces = new ArrayList<>();
             loadKnownFaces();
 
@@ -212,14 +208,11 @@ public class FaceRecognition {
                 faceImage.copyTo(grayFace);
             }
 
-            // Apply histogram equalization
             Imgproc.equalizeHist(grayFace, grayFace);
 
-            // Resize to standard size
             Mat resizedFace = new Mat();
             Imgproc.resize(grayFace, resizedFace, new Size(FACE_SIZE, FACE_SIZE));
 
-            // Save the face image
             String facePath = "registered_faces/" + username + ".jpg";
             boolean saved = Imgcodecs.imwrite(facePath, resizedFace);
 
@@ -227,7 +220,6 @@ public class FaceRecognition {
                 throw new RuntimeException("Failed to save face image");
             }
 
-            // Add to known faces
             if (!knownFaces.contains(username)) {
                 knownFaces.add(username);
                 System.out.println("Registered new face for: " + username);
