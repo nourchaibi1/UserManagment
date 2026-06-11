@@ -1,4 +1,3 @@
-/* Base styles */
 .root {
     -fx-background-color: #F8F9FA; /* Ultra-light gray (like airport terminal walls) */
     /*-fx-background-image: url("world-map-silhouette.png"); /* Optional subtle pattern */
@@ -11,7 +10,7 @@
 
 /* Title styles */
 .title-label {
-    -fx-text-fill: #F5F0E6;  /* Sand beige for contrast */
+    -fx-text-fill: #F5F0E6;  
     -fx-font-size: 36px;
     -fx-font-weight: bold;
     -fx-font-family: "Verdana";
@@ -37,8 +36,6 @@
     -fx-font-weight: bold;
 }
 
-/* Input fields */
-/* Input fields */
 .text-field, .password-field {
     -fx-background-radius: 10px;
     -fx-border-color: #0a2342;  /* Dark blue border only */
@@ -50,18 +47,7 @@
     -fx-prompt-text-fill: derive(#005F89, 50%);
     -fx-pref-width: 150px;
 }
-/*.text-field, .password-field {
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-    -fx-border-color: #1976D2;
-    -fx-border-width: 1.5;
-    -fx-padding: 10px;
-    -fx-font-size: 14px;
-    -fx-background-color: white;
-    -fx-pref-width: 250px;
-}*/
 
-/* Button styles */
 .button {-fx-background-color: linear-gradient(to bottom, #0a0f1a, #102040); /* Almost black with a hint of blue */
 -fx-text-fill: white;
 -fx-font-weight: bold;
@@ -73,21 +59,7 @@
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #102040, #0a0f1a); /* Reverse gradient on hover */
 }
-/*.button {
-    -fx-background-color: #1976D2;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8px;
-    -fx-padding: 12px 30px;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0.2, 0, 1);
-}
 
-.button:hover {
-    -fx-background-color: #1565C0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 7, 0.2, 0, 1);
-}*/
 
 /* Face icon container */
 .face-icon-container {
@@ -129,37 +101,33 @@
 }
 /* Button Style */
 .alert .button {
-    -fx-background-color: #1E90FF; /* Blue color for the button */
-    -fx-text-fill: white;          /* White text on the button */
-    -fx-background-radius: 30px;   /* Rounded button corners */
-    -fx-border-radius: 30px;       /* Rounded button corners */
+    -fx-background-color: #1E90FF; 
+    -fx-text-fill: white;          
+    -fx-background-radius: 30px;   
+    -fx-border-radius: 30px;      
     -fx-font-size: 14px;
-    -fx-padding: 8px 20px;         /* Padding for the button */
-    -fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.5), 10, 0.5, 0, 0); /* Corrected glow effect */
+    -fx-padding: 8px 20px;        
+    -fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.5), 10, 0.5, 0, 0); 
 }
 
-/* Hover Effect for Button */
 .alert .button:hover {
-    -fx-background-color: #4682B4; /* Slightly darker blue on hover */
-    -fx-effect: dropshadow(gaussian, rgba(70, 130, 180, 0.5), 15, 0.5, 0, 0); /* Corrected glowing hover effect */
+    -fx-background-color: #4682B4;
+    -fx-effect: dropshadow(gaussian, rgba(70, 130, 180, 0.5), 15, 0.5, 0, 0); 
 }
 
-/* For the Hyperlink (if used) */
 .alert .hyperlink {
-    -fx-text-fill: #1E90FF;        /* Blue color for links */
-    -fx-underline: true;           /* Underline links */
-    -fx-font-size: 16px;           /* Link font size */
-    -fx-font-weight: bold;         /* Bold link */
-    -fx-border-color: transparent; /* Remove border */
+    -fx-text-fill: #1E90FF;        
+    -fx-underline: true;           
+    -fx-font-size: 16px;           
+    -fx-font-weight: bold;         
+    -fx-border-color: transparent;
 }
 
-/* Hover Effect for Hyperlink */
 .alert .hyperlink:hover {
     -fx-text-fill: #4682B4;       /* Darker blue when hovering */
     -fx-underline: true;          /* Keep underline on hover */
 }
-/*tab*/
-           /* Style for the entire TableView */
+
        .custom-table {
            -fx-border-color: #ddd;
            -fx-border-width: 1px;
@@ -169,7 +137,6 @@
            -fx-padding: 10px;
        }
 
-/* Style for individual table columns */
 .custom-table {
     -fx-background-color: white;
     -fx-border-color: #E0E0E0;
@@ -185,13 +152,11 @@
     -fx-background-color: #E3F2FD; /* Selected row highlight */
 }
 
-/* Action buttons */
 .action-column {
     -fx-alignment: CENTER;
     -fx-pref-width: 100;
 }
 
-/* Styling for Buttons in Action Columns */
 .action-column .button {
   -fx-background-color: linear-gradient(to bottom, #0a0f1a, #102040); /* Almost black with a hint of blue */
         -fx-text-fill: white;
@@ -307,26 +272,7 @@
     -fx-background-color: rgba(255, 255, 255, 0.1);
     -fx-background-radius: 10;
 }
-/*
-.logout-button {
-    -fx-background-color: #dc3545;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5px;
-    -fx-padding: 8px 15px;
-    -fx-cursor: hand;
-}
 
-.logout-button:hover {
-    -fx-background-color: #c82333;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
-}
-
-.logout-button:pressed {
-    -fx-background-color: #bd2130;
-    -fx-translate-y: 1px;
-}
-*/
 /* Form Section Styles */
 .form-container-transparent {
     -fx-background-color: rgba(255, 255, 255, 0.1);
@@ -426,13 +372,7 @@
 .cancel-button:hover {
     -fx-background-color: #da190b;
 }
-/*.pagination-container-transparent {
-    -fx-background-color: rgba(255, 255, 255, 0.05);
-    -fx-padding: 10 20 10 20;
-    -fx-alignment: CENTER_LEFT;
-    -fx-border-color: #ffffff22;
-    -fx-border-width: 1 0 0 0;
-}*/
+
 #welcomeLabel {
     -fx-text-fill: black;
     -fx-font-weight: bold;
@@ -442,22 +382,3 @@
     -fx-padding: 0;
     -fx-margin: 0;
 }
-/*.category-axis .axis-tick-label {
-    -fx-font-size: 8px; /* Bigger month names
-    -fx-text-fill: black;
-}
-
-.number-axis .axis-tick-label {
-    -fx-font-size: 16px; /* Bigger number values
-    -fx-text-fill: black;
-}
-
-.axis-label {
-    -fx-font-size: 18px; /* Axis title like 'Month', etc.
-    -fx-text-fill: black;
-}
-
-.chart-legend {
-    -fx-font-size: 16px; /* Legend text like 'Users Registered'
-    -fx-text-fill: black;
-}*/
