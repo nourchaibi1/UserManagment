@@ -25,11 +25,10 @@ public class FaceRecognition {
     private List<String> knownFaces;
     private Consumer<String> onFaceRecognized;
     private int recognitionCount = 0;
-    private static final int RECOGNITION_THRESHOLD = 10; // Number of consecutive recognitions needed
+    private static final int RECOGNITION_THRESHOLD = 10;
 
     static {
         try {
-            // Try to load the library from the system path first
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         } catch (UnsatisfiedLinkError e) {
             try {
