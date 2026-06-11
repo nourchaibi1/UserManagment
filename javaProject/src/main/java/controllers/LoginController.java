@@ -1,4 +1,3 @@
-//they say
 package controllers;
 import com.google.api.client.auth.oauth2.Credential;
 import javafx.animation.ScaleTransition;
