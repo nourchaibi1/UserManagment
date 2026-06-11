@@ -11,7 +11,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfo;
-//import com.google.api.client.extensions.jetty.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 
 import java.io.InputStreamReader;
@@ -33,23 +32,20 @@ public class GoogleSignIn {
                     .build();
 
             LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8899).build();
-            // 👉 Manually build the URL with "prompt=consent"
             String redirectUri = receiver.getRedirectUri();
             String authorizeUrl = flow.newAuthorizationUrl()
                     .setRedirectUri(redirectUri)
                     .set("prompt", "consent") // <-- This forces Google to show the sign-in screen every time
                     .build();
 
-            //they say 👉 Open browser manually
+            //they say Open browser manually
 
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(authorizeUrl));
-            // 👉 Wait for code from browser
             String code = receiver.waitForCode();
-// Exchange the code for a token response
             GoogleTokenResponse tokenResponse = flow.newTokenRequest(code)
                     .setRedirectUri(redirectUri)
                     .execute();
-            // 👉 they say Exchange code for credentials
+            // they say Exchange code for credentials
             return flow.createAndStoreCredential(tokenResponse, "user");
             //return flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
             //return new com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
